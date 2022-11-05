@@ -82,6 +82,9 @@ def getPlyTeamStats(teamMod, link):
             del x[0]
             teamVal = x
             while len(teamVal) > 16:
-                del teamVal[-1]
+                if teamVal[0].isalpha():
+                    del teamVal[0]
+                else:
+                    del teamVal[-1]
     
     return [d, teamVal]
