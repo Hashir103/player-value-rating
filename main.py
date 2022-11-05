@@ -2,7 +2,7 @@ import re
 from bs4 import BeautifulSoup
 import requests
 from flask import Flask, render_template
-
+from getPlayerStat import *
 
 def getHTMLVer(url):
     return requests.get(url).text
@@ -62,14 +62,14 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("webpage.html")
 
 @app.route("/teams/<name>")
 def user(name):
     if str(name) in teams:
         toPrint = "<a href=\"/\">Main Page</a><br><br>" + (f"{name}<br><a href={teams[str(name).lower()][0]}>Team Website</a><br><br>Recently Played Games:<br>")
         for game in teams[str(name).lower()][1]:
-            toPrint += (f"<a href={game}>Game Link</a><br>")
+            toPrint += (f"<a href={game}>Game</a><br>{getPlyTeamStats(name, game)}<br><br>")
     else:
         toPrint = (f"Error! {name} is not a valid team.")
 
