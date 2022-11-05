@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 from flask import Flask, render_template
 from getPlayerStat import *
+from updateStats import *
 
 def getHTMLVer(url):
     return requests.get(url).text
@@ -89,7 +90,13 @@ def user(name):
             toPrint += (f"<a href={game}>Game</a><br><br><br>")
             totals.append(getPlyTeamStats(name, game))
 
-        toPrint += (f"")
+        placeholder = givenVal(totals[0], totals[1])
+        for x in range(2, len(totals)):
+            placeholder = givenVal(placeholder, totals[x])
+        
+        toPrint += str(placeholder)
+
+
     else:
         toPrint = (f"Error! {name} is not a valid team.")
 
