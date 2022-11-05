@@ -68,6 +68,8 @@ def getPlyTeamStats(teamMod, link):
             del x[1]
             name = x[0]
             del x[0]
+            if len(x) != 16:
+                del x[0]
             d[name] = x
         else:
             x = re.sub("[|]", ' ', x)
