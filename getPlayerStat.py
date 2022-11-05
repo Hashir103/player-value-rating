@@ -55,7 +55,26 @@ else:
     val = val2
 
 del val[0]
+teamVal = None
+d = {}
 
-# do this for each string
-val[0] = re.sub("[|]", ' ', val[0])
-print(val[0])
+for x in val:
+    if x != val[-1]:
+        x = re.sub("[|]", ' ', x)
+        x = x.split()
+        x[0] = re.sub("[^a-z_A-Z]", "", x[0])
+        x[0] = x[0] + " " + x[1]
+        del x[1]
+        name = x[0]
+        del x[0]
+        d[name] = x
+    else:
+        x = re.sub("[|]", ' ', x)
+        x = x.split()
+        x[0] = re.sub("[^a-z_A-Z]", "", x[0])
+        x[0] = x[0] + " " + x[1]
+        del x[1]
+        name = x[0]
+        del x[0]
+        teamVal = x
+        
