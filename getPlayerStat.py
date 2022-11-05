@@ -13,9 +13,11 @@ replacements = [
     ("</td>", ""),
     ("<td>", ""),
     ("<tr>", ""),
+    ("*", ""),
     ("</tr>", ""),
     ("<b>", ""),
     ("</b>", ""),
+    ('</table>', ""),
     ('<td align="left" colspan="3">', ""),
     ("<td align=\"right\">", "|"),
     ("<td align=\"left\">", ""),
@@ -27,4 +29,22 @@ replacements = [
 for old, new in replacements:
     val = val.replace(old, new)
 
-print(val)
+val = val.split("\n")
+
+for x in range(len(val)):
+    if "Totals" in val[x]:
+        cutOff = x
+        break
+
+val1 = val[:cutOff+1]
+val2 = val[cutOff+1:]
+
+while "" in val1 or "" in val2:
+    if "" in val1:
+        del val1[val1.index("")]
+    if "" in val2:
+        del val2[val2.index("")]
+
+print(val1)
+print()
+print(val2)
