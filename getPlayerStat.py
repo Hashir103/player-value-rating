@@ -48,7 +48,8 @@ def getPlyTeamStats(teamMod, link):
             del val2[val2.index("")]
 
     val1[0] = re.sub(r'\W+', '', val1[0])
-    val2[0] = re.sub(r'\W+', '', val2[0])
+    if len(val2) != 0:
+        val2[0] = re.sub(r'\W+', '', val2[0])
 
     if team in val1[0].lower():
         val = val1
@@ -82,4 +83,3 @@ def getPlyTeamStats(teamMod, link):
             teamVal = x
     
     return [d, teamVal]
-        
