@@ -76,6 +76,10 @@ def choice_2():
 def choice_3():
     return render_template("ouawest.html")
 
+@app.route("/about")
+def choice_4():
+    return render_template("about.html")
+
 @app.route("/teams/<name>")
 def user(name):
     if str(name) in teams:
