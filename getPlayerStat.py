@@ -1,10 +1,11 @@
-import re
 from bs4 import BeautifulSoup
 import requests
+import re
 
 def getHTMLVer(url):
     return requests.get(url).text
 
+team = "queens"
 doc = getHTMLVer("https://usportshoops.ca/history/show-game-report.php?Gender=MBB&Season=2022-23&Gameid=M20221104QUENIP")
 soup = BeautifulSoup(doc, "html.parser")
 
@@ -45,6 +46,16 @@ while "" in val1 or "" in val2:
     if "" in val2:
         del val2[val2.index("")]
 
-print(val1)
-print()
-print(val2)
+val1[0] = re.sub(r'\W+', '', val1[0])
+val2[0] = re.sub(r'\W+', '', val2[0])
+
+if team in val1[0].lower():
+    val = val1
+else:
+    val = val2
+
+del val[0]
+
+# do this for each string
+val[0] = re.sub("[|]", ' ', val[0])
+print(val[0])
