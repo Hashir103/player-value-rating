@@ -86,7 +86,10 @@ def user(name):
         totals = []
         toPrint = "<a href=\"/\">Main Page</a><br><br>" + (f"{name}<br><a href={teams[str(name).lower()][0]}>Team Website</a><br><br>Recently Played Games:<br>")
         for game in teams[str(name).lower()][1]:
-            toPrint += (f"<a href={game}>Game</a><br>{getPlyTeamStats(name, game)}<br><br>")
+            toPrint += (f"<a href={game}>Game</a><br><br><br>")
+            totals.append(getPlyTeamStats(name, game))
+
+        toPrint += (f"")
     else:
         toPrint = (f"Error! {name} is not a valid team.")
 
