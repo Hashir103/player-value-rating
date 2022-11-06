@@ -19,8 +19,8 @@ def calculatePVR(p,t):
         p_fgPercent = str(p[name][4]) # DONT NEED I THINK
         p_FTM_FTA = (p[name][5].split('-'))
         p_FTM = float(p_FTM_FTA[0])
-        if len(p_FTM_FTA) >1:
-            p_FTA = float(p_FTM_FTA[1])
+        
+        p_FTA = float(p_FTM_FTA[-1])
         p_ftPercent = float(p[name][6])
         p_Off_Rebounds = float(p[name][7])
         p_Def_Rebounds = float(p[name][8])
@@ -30,7 +30,7 @@ def calculatePVR(p,t):
         p_Turnovers = float(p[name][12])
         p_Blocks = float(p[name][13])
         p_Steals = float(p[name][14])
-        p_Points = float(p[name][15])
+        p_Points = float(p[name][-1])
 
         #t_minutesPlayed = t[name][0]
         #t_threePointsAttempted = p[name][1]

@@ -89,17 +89,19 @@ def user(name):
         for game in teams[str(name).lower()][1]:
             totals.append(getPlyTeamStats(name, game))
 
-        placeholder = givenVal(totals[0], totals[1])
-        for x in range(2, len(totals)):
-            placeholder = givenVal(placeholder, totals[x])
-        
-        toPrint = placeholder
+        l1 = []
+        l2 = []
+        for game in totals:
+            l1.append(game[0])
+            l2.append(game[1])
 
-        print(placeholder)
+        # getAvg(l1, l2)
 
-        template = str(name) + ".html"
+        # template = str(name) + ".html"
 
-        return render_template(template, content=toPrint)
+        # return render_template(template)
+
+        return str(l1) + "<br><br>" + str(l2)
 
 
     else:
