@@ -2,59 +2,35 @@ import math
 # p = { "Player Name":[0 MINS,1 3PA-3PM, 2 P%, 3 FGM-FGA, 4 FG%, 5 FTM-FTA, 6 FT%, 7 OREB, 8 DREB, 9 TREB, 10 PF, 11 A, 12 TO,13 BLK, 14 STL , 15 PTS]  
 # t = [0 MINS, 1 3PM-3PA, 2 3P%, 3 FGM-FGA, 4 FG%, 5 FTM-FTA, 6 FT%, 7 OREB, 8 DREB, 9 TREB, 10 PF, 11 A, 12 TO, 13 BLK, 14 STL, 15 PTS]
 
-
-p = {'Luka Syllas': ['37', '0-0', '0.0', '10-20', '50.0', '4-6', '66.7', '2', '2', '4', '3', '5', '0', '0', '1', '24'], 
-    'Connor Keefe': ['30', '0-0', '0.0', '7-18', '38.9', '7-11', '63.6', '4', '6', '10', '2', '2', '2', '0', '0', '21'], 
-    'Connor Kelly': ['29', '4-7', '57.1', '5-9', '55.6', '0-0', '0.0', '1', '4', '5', '5', '0', '0', '0', '2', '14'], 
-    'Cameron Bett': ['29', '1-8', '12.5', '1-10', '10.0', '5-6', '83.3', '0', '2', '2', '3', '3', '2', '0', '0', '8'], 
-    'Sebastian Campbell': ['8', '0-1', '0.0', '1-7', '14.3', '3-5', '60.0', '3', '5', '8', '1', '1', '0', '0', '0', '5'], 
-    'Gianni Itegeli': ['11', '0-0', '0.0', '2-3', '66.7', '0-0', '0.0', '0', '1', '1', '0', '0', '0', '0', '0', '4'], 
-    'Michael Kelvin': ['11', '0-1', '0.0', '1-2', '50.0', '0-0', '0.0', '1', '1', '2', '1', '0', '0', '0', '0', '2'], 
-    'Samuel Kong': ['0', '0-0', '0.0', '1-1', '100.0', '0-0', '0.0', '0', '0', '0', '0', '0', '0', '0', '1', '2'], 
-    'Isaac Krueger': ['15', '0-0', '0.0', '0-2', '0.0', '1-2', '50.0', '0', '4', '4', '4', '1', '1', '1', '0', '1'], 
-    'David Ayon': ['16', '0-1', '0.0', '0-1', '0.0', '0-0', '0.0', '2', '2', '4', '1', '0', '2', '0', '0', '0'], 
-    'Ryan Heim': ['10', '0-1', '0.0', '0-1', '0.0', '0-0', '0.0', '0', '0', '0', '2', '0', '3', '0', '0', '0'], 
-    'Scott Jenkins': ['6', '0-0', '0.0', '0-0', '0.0', '0-0', '0.0', '0', '0', '0', '0', '0', '0', '0', '0', '0'], 
-    'Filip Subotic': ['1', '0-0', '0.0', '0-0', '0.0', '0-0', '0.0', '0', '0', '0', '0', '0', '0', '0', '0', '0'],
-    'my king': ['47', '3-7', '43.9', '19-32', '59.4', '10-11', '90.9', '4', '4', '8', '2', '8', '5', '1', '1', '51']} 
-    
-
-
-t =  ['203', '10-37', '27', '44-99', '44.4', '16-22', '72.7', '19', '34', '53', '18', '18', '11', '3', '5', '200']
-
-
 def calculatePVR(p,t):
     # p is dictionary of players
     # t is the list of the stats
-
-    # p = { "Player Name":[0 MINS,1 3PA-3PM,3 FGM-FGA,4 FG%,5 FTM-FTA,6 FT%,7 OREB,8 DREB,9 TREB,10 PF,11 A,12 TO,13 BLK,14 STL ,29 PTS]  
-    # t = [0 MINS, 1 3PA, 2 3PM, 3 FGM/FGA, 4 FG%, 5 FTM/FTA, 6 FT%, 7 OREB, 8 DREB, 9 TREB, 10 PF, 11 A, 12 TO, 13 BLK, 14 STL, 15 PTS]
-
     newList = [[]]
     for key in p:
 
         name = key
         p_minutesPlayed = p[name][0]
         p_3PM_3PA= (p[name][1].split('-'))
-        p_3PM = int(p_3PM_3PA[0])
+        p_3PM = float(p_3PM_3PA[0])
         p_3PA = float(p_3PM_3PA[-1])
         p_FGM_FGA = (p[name][3].split('-'))
         p_FGM = float(p_FGM_FGA[0])
         p_FGA = float(p_FGM_FGA[-1])
-        p_fgPercent = float(p[name][4]) # DONT NEED I THINK
+        p_fgPercent = str(p[name][4]) # DONT NEED I THINK
         p_FTM_FTA = (p[name][5].split('-'))
-        p_FTM = int(p_FTM_FTA[0])
-        p_FTA = int(p_FTM_FTA[1])
+        p_FTM = float(p_FTM_FTA[0])
+        
+        p_FTA = float(p_FTM_FTA[-1])
         p_ftPercent = float(p[name][6])
-        p_Off_Rebounds = int(p[name][7])
-        p_Def_Rebounds = int(p[name][8])
-        p_Rebounds = int(p[name][9])
-        p_PF = int(p[name][10])
-        p_Assists = int(p[name][11])
-        p_Turnovers = int(p[name][12])
-        p_Blocks = int(p[name][13])
-        p_Steals = int(p[name][14])
-        p_Points = int(p[name][15])
+        p_Off_Rebounds = float(p[name][7])
+        p_Def_Rebounds = float(p[name][8])
+        p_Rebounds = float(p[name][9])
+        p_PF = float(p[name][10])
+        p_Assists = float(p[name][11])
+        p_Turnovers = float(p[name][12])
+        p_Blocks = float(p[name][13])
+        p_Steals = float(p[name][14])
+        p_Points = float(p[name][-1])
 
         #t_minutesPlayed = t[name][0]
         #t_threePointsAttempted = p[name][1]
@@ -65,14 +41,14 @@ def calculatePVR(p,t):
         #t_FTM_FTA = t[name][5].split('-')
         #t_ftm_hyphin_fta = t_FTM_FTA[1]
         #t_ftPercent = p[name][6]
-        t_Off_Rebounds = int(t[7])
-        t_Def_Rebounds = int(t[8])
-        t_PF = int(t[10])
-        t_Assists = int(t[11])
-        t_Turnovers = int(t[12])
-        t_Blocks = int(t[13])
-        t_Steals = int(t[14])
-        t_Points = int(t[15])
+        t_Off_Rebounds = float(t[7])
+        t_Def_Rebounds = float(t[8])
+        t_PF = float(t[10])
+        t_Assists = float(t[11])
+        t_Turnovers = float(t[12])
+        t_Blocks = float(t[13])
+        t_Steals = float(t[14])
+        t_Points = float(t[15])
 
 
         if t_fgMade==0:
@@ -130,16 +106,6 @@ def calculatePVR(p,t):
             
         else:
             s_Efficiency = (((0.5*p_Points)/(p_FGA+0.475*p_FTA))+1)*p_Points
-        
-
-        print(s_Assist)
-        print(s_Point)
-        print(s_Rebound)
-        print(s_Steals)
-        print(s_Blocks)
-        print(s_Efficiency)
-        print(s_Turnover)
-        print(s_PF)
 
         PVR = s_Assist + s_Point + s_Rebound + s_Steals + s_Blocks + s_Efficiency - s_Turnover - s_PF
         
@@ -147,7 +113,6 @@ def calculatePVR(p,t):
         # add name, pvr, points, assists, repbound
         newList.append([name, PVR, p_Points, p_Assists, p_Rebounds])
     del newList[0]
-    print(newList)
 
     PVR_list = []
     for pvr in newList:
@@ -161,20 +126,5 @@ def calculatePVR(p,t):
     
     
     del MAIN_RETURN[0]
-    
-    print()
-    print(top_PVR_List)
-    print()
-    print(MAIN_RETURN)
 
     return MAIN_RETURN
-
-
-
-
-
-# p = { "Player Name":[0 MINS,1 3PA-3PM, 2 FGM-FGA, 3 FG%, 4 FTM-FTA, 5 FT%, 6 OREB, 7 DREB, 8 TREB, 9 PF, 10 A, 11 TO,12 BLK, 13 STL , 14 PTS]  
-# t = [0 MINS, 1 3PA-3PM, 2 FGM/FGA, 3 FG%, 4 FTM-FTA, 5 FT%, 6 OREB, 7 DREB, 8 TREB, 9 PF, 10 A, 11 TO, 12 BLK, 13 STL, 14 PTS]
-
-
-calculatePVR(p,t)
