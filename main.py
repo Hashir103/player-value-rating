@@ -96,13 +96,13 @@ def user(name):
             l2.append(game[1])
 
         avg = getAvg(l1, l2)
-        # pvr = calculatePVR(avg[0], avg[1])
+        pvr = calculatePVR(avg[0], avg[1])
 
         # template = str(name) + ".html"
 
         # return render_template(template)
 
-        return str(avg)
+        return str(pvr)
 
 
     else:
