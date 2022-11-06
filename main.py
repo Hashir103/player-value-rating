@@ -4,6 +4,7 @@ import requests
 from flask import Flask, render_template
 from getPlayerStat import *
 from updateStats import *
+from hackathon_calculatePVR import *
 
 def getHTMLVer(url):
     return requests.get(url).text
@@ -85,22 +86,24 @@ def choice_4():
 def user(name):
     if str(name) in teams:
         totals = []
-        toPrint = "<a href=\"/\">Main Page</a><br><br>" + (f"{name}<br><a href={teams[str(name).lower()][0]}>Team Website</a><br><br>Recently Played Games:<br>")
         for game in teams[str(name).lower()][1]:
-            toPrint += (f"<a href={game}>Game</a><br><br><br>")
             totals.append(getPlyTeamStats(name, game))
 
         placeholder = givenVal(totals[0], totals[1])
         for x in range(2, len(totals)):
             placeholder = givenVal(placeholder, totals[x])
         
-        toPrint += str(placeholder)
+        toPrint = placeholder
+
+        print(placeholder)
+
+        template = str(name) + ".html"
+
+        return render_template(template, content=toPrint)
 
 
     else:
-        toPrint = (f"Error! {name} is not a valid team.")
-
-    return toPrint
+        return f"Error! {name} is not a valid team."
     
 
 
