@@ -1,7 +1,7 @@
 import re
 from bs4 import BeautifulSoup
 import requests
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from getPlayerStat import *
 from updateStats import *
 from hackathon_calculatePVR import *
@@ -23,19 +23,19 @@ teams = {
     "ontario tech":[],
     "ottawa":[],
     "queens":[],
-    "toronto metropolitan":[],
+    "tmu":[],
     "toronto":[],
     "waterloo":[],
     "western":[],
-    "wilfrid laurier":[],
+    "wilfrid":[],
     "windsor":[],
     "york":[]
     }
 
 for key in teams:
-    if key == "wilfrid laurier":
+    if key == "wilfrid":
         link = "https://usportshoops.ca/history/teamseason.php?Gender=MBB&Season=2022-23&Team=" + "WLUTeam"
-    elif key == "toronto metropolitan":
+    elif key == "tmu":
         link = "https://usportshoops.ca/history/teamseason.php?Gender=MBB&Season=2022-23&Team=" + "TMUnow"
     else:
         link = "https://usportshoops.ca/history/teamseason.php?Gender=MBB&Season=2022-23&Team=" + re.sub(r'[^a-zA-Z\s]', '', key)
@@ -60,6 +60,26 @@ def getGameLinks(team):
 for team in teams:
     getGameLinks(team)
 
+teamPVR = {}
+
+for team in teams:
+    print(team)
+    totals = []
+    for game in teams[str(team)][1]:
+        totals.append(getPlyTeamStats(str(team), game))
+
+    l1 = []
+    l2 = []
+    for game in totals:
+        l1.append(game[0])
+        l2.append(game[1])
+
+    avg = getAvg(l1, l2)
+
+    pvr = calculatePVR(avg[0], avg[1])
+
+    teamPVR[team] = pvr
+    
 app = Flask(__name__)
 
 @app.route("/")
@@ -87,30 +107,13 @@ def user(name):
     if str(name) in teams:
         return render_template("team.html")
 
-
-
     else:
-        return f"Error! {name} is not a valid team."
+        return redirect(url_for("home"))
     
 
 
 if __name__ == "__main__":
-    #app.run(debug=True) 
-    name = "queens"
-    totals = []
-    for game in teams[str(name).lower()][1]:
-        totals.append(getPlyTeamStats(name, game))
-
-    l1 = []
-    l2 = []
-    for game in totals:
-        l1.append(game[0])
-        l2.append(game[1])
-
-
-    avg = getAvg(l1, l2)
-
-    pvr = calculatePVR(avg[0], avg[1])
-    print(pvr)
+    # app.run(debug=True)
+    pass 
 
 
