@@ -85,6 +85,7 @@ def choice_4():
 @app.route("/teams/<name>")
 def user(name):
     if str(name) in teams:
+        # name = "queens"
         # totals = []
         # for game in teams[str(name).lower()][1]:
         #     totals.append(getPlyTeamStats(name, game))
@@ -95,10 +96,9 @@ def user(name):
         #     l1.append(game[0])
         #     l2.append(game[1])
 
+
         # avg = getAvg(l1, l2)
         # pvr = calculatePVR(avg[0], avg[1])
-
-
         return render_template("team.html")
 
 
@@ -109,5 +109,5 @@ def user(name):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True) 
 

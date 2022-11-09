@@ -1,39 +1,42 @@
 def getAvg(l1, l2):
-    hypVals = [[]]
+    teamTotals = [[]]
+
+    for x in range(15):
+        teamTotals.append(0)
+
+    teamTotals[1] = "0-0"
+    teamTotals[3] = "0-0"
+    teamTotals[5] = "0-0"
+    teamTotals[0] = 0
+
+    CalcOk = True
     for x in range(len(l2)):
-        hypValsAdd = []
         for y in range(len(l2[x])):
-            if "-" in l2[x][y]:
-                broken= l2[x][y].split("-")
-                broken= [float(broken[0]), float(broken[1])]
-                hypValsAdd.append(broken)
-                l2[x][y] = 0
+            if "-" not in l2[x][y]:
+                if CalcOk:
+                    teamTotals[y] += float(l2[x][y])/len(l2)
+                else:
+                    CalcOk = True
             else:
-                l2[x][y] = float(l2[x][y])
-        hypVals.append(hypValsAdd)
-    
-    del hypVals[0]
+                CalcOk = False
+                val = l2[x][y].split("-")
+                val[0] = float(val[0]) / len(l1)
+                val[1] = float(val[1]) / len(l1)
 
-    teamTotals = [ sum(x)/len(x) for x in zip(*l2) ]
-    hypValsTotal = hypVals[0]
-    for x in range(1, len(hypVals)):
-        for y in range(len(hypVals[x])):
-            hypValsTotal[y][0] += hypVals[x][y][0]
-            hypValsTotal[y][1] += hypVals[x][y][1]
-
-    for x in range(len(hypValsTotal)):
-        for y in range(len(hypValsTotal[x])):
-            hypValsTotal[x][y] /= len(hypVals)
+                teamTotals[y] = str(
+                    val[0] + float(teamTotals[y].split("-")[0])
+                ) + "-" + str(
+                    val[1] + float(teamTotals[y].split("-")[1])
+                )
     
-    
-    for x in range(len(teamTotals)):
-        if x == 1:
-            teamTotals[x] = str(hypValsTotal[0][0])+"-"+str(hypValsTotal[0][1])
-        elif x == 3:
-            teamTotals[x] = str(hypValsTotal[1][0])+"-"+str(hypValsTotal[1][1])
-        elif x == 5:
-            teamTotals[x] = str(hypValsTotal[2][0])+"-"+str(hypValsTotal[2][1])
+    for x in range(1, 6, 2):
+        val = teamTotals[x].split("-")
         
+        if val[1] == 0:
+            teamTotals[x+1] = 0
+        else:
+            teamTotals[x+1] = (float(val[0])/float(val[1]))*100
+
 
     for d in l1:
         for key in d:
@@ -63,8 +66,6 @@ def getAvg(l1, l2):
                         percentage = 0
                         new_d[key][x+1] = percentage
                         toCalc1 = False
-
-                    
 
     toCalc = True
     for p in range(1, len(l1)):
