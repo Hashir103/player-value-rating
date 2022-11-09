@@ -63,7 +63,6 @@ for team in teams:
 teamPVR = {}
 
 for team in teams:
-    print(team)
     totals = []
     for game in teams[str(team)][1]:
         totals.append(getPlyTeamStats(str(team), game))
@@ -79,12 +78,36 @@ for team in teams:
     pvr = calculatePVR(avg[0], avg[1])
 
     teamPVR[team] = pvr
+
+highestPVR = []
+topPlayer = []
+
+for team in teamPVR:
+    topPlayer.append(teamPVR[team][0])
+    highestPVR.append(teamPVR[team][0][1])
+
+top3 = ['1', '2', '3']
+highestPVR.sort()
+highestPVR.reverse()
+
+highestPVR = highestPVR[:3]
+
+counter = 0
+index = 0
+while counter < 3:
+    if topPlayer[index][1] in highestPVR:
+        top3[
+            highestPVR.index(topPlayer[index][1])
+        ] = topPlayer[index]
+        counter +=1
+    index+=1
+
     
 app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    return render_template("index.html", top=top3)
 
 @app.route("/oua-central")
 def choice_1():
@@ -105,7 +128,8 @@ def choice_4():
 @app.route("/teams/<name>")
 def user(name):
     if str(name) in teams:
-        return render_template("team.html")
+        tName = name
+        return render_template("team.html", teamStats=teamPVR[tName])
 
     else:
         return redirect(url_for("home"))
@@ -113,7 +137,6 @@ def user(name):
 
 
 if __name__ == "__main__":
-    # app.run(debug=True)
-    pass 
+    app.run()
 
 
