@@ -51,11 +51,23 @@
                 <p class="lead my-4">
                     Player Valuability Ratings are composed of many different factors of a player's 
                     games that can accurately predicate their impact on the court and how valuable they are
-                     to their team. When watching the nba draft there are hundreds of superstars lined up ready 
-                     to be picked by their favourite basketball team, however most of these talented and skilled players 
-                     are often overlooked and end up falling towards the end of the draft, whereas many of the top tier 
-                     talent drafted early in the draft are not able to add value to the team they were drafted to due to 
-                     poor scouting.
+                     to their team. <br><br>
+
+                     The first metric calculated is the players' averages over their teams most recent 5 games (or less depending on team).
+                     The most important stat: <b>AVAILABILITY</b>. If your team has played 5 games, your stat will be divided by 5, 
+                     even if you did not play any minutes! This is a very important distinction from traditional stats. After that,
+                     the following is considered:
+                     <br><br>
+
+                     The main idea is to focus on players' statistics as a percentage, rather than the number. 
+                     Most of the big 8 stats are converted to percentages of their team stats.<br><br>
+
+                     Additionally, for special statistics like turnovers, blocks, steals, where more of them means less inherent
+                     "luck" is involved are applied to an exponential function.
+
+                     <br><br>
+                     True shooting is also considered to determine this statistic.
+                     
                     <br><br>
                      <img src="static/img.png" width="40%" height="40%">
                     
