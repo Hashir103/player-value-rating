@@ -64,7 +64,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def home():
-    return render_template("webpage.html")
+    return render_template("index.html")
 
 @app.route("/oua-central")
 def choice_1():
@@ -98,9 +98,8 @@ def user(name):
         # avg = getAvg(l1, l2)
         # pvr = calculatePVR(avg[0], avg[1])
 
-        template = str(name) + ".html"
 
-        return render_template(template)
+        return render_template("team.html")
 
 
 
