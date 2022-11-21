@@ -1,142 +1,79 @@
-import re
-from bs4 import BeautifulSoup
-import requests
+#!/usr/bin/env python
+
+"""main.py: This file executes the main python code to run the PVR stat on all teams and display the output on a web application using flask."""
+
+from webParsing import *
+from calculations import *
 from flask import Flask, render_template, redirect, url_for
-from getPlayerStat import *
-from updateStats import *
-from hackathon_calculatePVR import *
+import time
 
-def getHTMLVer(url):
-    return requests.get(url).text
-# Dictionary indices:
-# 0 - String to main web page (will get scraped initially for stats)
-# 1 - List of 5 most recent games webpages (will get scraped for stats)
-teams = {
-    "algoma":[],
-    "brock":[],
-    "carleton":[],
-    "guelph":[],
-    "lakehead":[],
-    "laurentian":[],
-    "mcmaster":[],
-    "nipissing":[],
-    "ontario tech":[],
-    "ottawa":[],
-    "queens":[],
-    "tmu":[],
-    "toronto":[],
-    "waterloo":[],
-    "western":[],
-    "wilfrid":[],
-    "windsor":[],
-    "york":[]
-    }
+def main():
+    '''This is the main function, where all execution of the code occurs'''
 
-for key in teams:
-    if key == "wilfrid":
-        link = "https://usportshoops.ca/history/teamseason.php?Gender=MBB&Season=2022-23&Team=" + "WLUTeam"
-    elif key == "tmu":
-        link = "https://usportshoops.ca/history/teamseason.php?Gender=MBB&Season=2022-23&Team=" + "TMUnow"
-    else:
-        link = "https://usportshoops.ca/history/teamseason.php?Gender=MBB&Season=2022-23&Team=" + re.sub(r'[^a-zA-Z\s]', '', key)
-    teams[key].append(link)
+    start_time = time.time()
 
-def getGameLinks(team):
-    doc = getHTMLVer(teams[team][0])
-    soup = BeautifulSoup(doc, "html.parser")
+    # how many recent games do we check
+    magic_number = 5
 
-    games = []
-    for tag in soup.find_all('a'):
-        if tag.string == "Stats":
-            games.append(str(tag).replace("amp;", ""))
+    # get the main team page for each team
+    teams = getTeamPages()
+    teamPVR = {}
 
-    games = games[-5:]
-    toAdd = []
-    for game in games:
-        toAdd.append("https://usportshoops.ca" + str(game)[9:-11])
+    top_players = {}
+    top_pvrs = []
 
-    teams[team].append(toAdd)
+    # get the teams most recent 5 games and their PVRs
+    for team in teams:
+        teams[team].append(getTeamGames(teams[team][0], magic_number))
+        teamPVR[team] = getTeamPVR(team, teams[team][1])
+        
+        # we only want players who've played all games
+        if teamPVR[team][0][-1] == magic_number:
+            top_players[teamPVR[team][0][1]] = teamPVR[team][0]
+            top_pvrs.append(teamPVR[team][0][1])
 
-for team in teams:
-    getGameLinks(team)
+    # get the top 3 PVRs in the league
+    top_pvrs.sort()
+    top_pvrs.reverse()
+    top_pvrs = top_pvrs[:3]
 
-teamPVR = {}
+    for x in range(len(top_pvrs)):
+        top_pvrs[x] = top_players[top_pvrs[x]]
 
-for team in teams:
-    totals = []
-    for game in teams[str(team)][1]:
-        totals.append(getPlyTeamStats(str(team), game))
+    app = Flask(__name__)
 
-    l1 = []
-    l2 = []
-    for game in totals:
-        l1.append(game[0])
-        l2.append(game[1])
+    @app.route("/")
+    def home():
+        return render_template("index.html", top=top_pvrs)
 
-    avg = getAvg(l1, l2)
+    @app.route("/oua-central")
+    def choice_1():
+        return render_template("ouacentral.html")
 
-    pvr = calculatePVR(avg[0], avg[1])
+    @app.route("/oua-eastern")
+    def choice_2():
+        return render_template("ouaeast.html")
 
-    teamPVR[team] = pvr
+    @app.route("/oua-western")
+    def choice_3():
+        return render_template("ouawest.html")
 
-highestPVR = []
-topPlayer = []
+    @app.route("/about")
+    def choice_4():
+        return render_template("about.html")
 
-for team in teamPVR:
-    topPlayer.append(teamPVR[team][0])
-    highestPVR.append(teamPVR[team][0][1])
+    @app.route("/teams/<name>")
+    def user(name):
+        if str(name) in teams:
+            tName = name
+            return render_template("team.html", teamStats=teamPVR[tName])
 
-top3 = ['1', '2', '3']
-highestPVR.sort()
-highestPVR.reverse()
+        else:
+            return redirect(url_for("home"))
 
-highestPVR = highestPVR[:3]
+    print(f"\nExecution finished in {time.time() - start_time} seconds")
 
-counter = 0
-index = 0
-while counter < 3:
-    if topPlayer[index][1] in highestPVR:
-        top3[
-            highestPVR.index(topPlayer[index][1])
-        ] = topPlayer[index]
-        counter +=1
-    index+=1
-
-    
-app = Flask(__name__)
-
-@app.route("/")
-def home():
-    return render_template("index.html", top=top3)
-
-@app.route("/oua-central")
-def choice_1():
-    return render_template("ouacentral.html")
-
-@app.route("/oua-eastern")
-def choice_2():
-    return render_template("ouaeast.html")
-
-@app.route("/oua-western")
-def choice_3():
-    return render_template("ouawest.html")
-
-@app.route("/about")
-def choice_4():
-    return render_template("about.html")
-
-@app.route("/teams/<name>")
-def user(name):
-    if str(name) in teams:
-        tName = name
-        return render_template("team.html", teamStats=teamPVR[tName])
-
-    else:
-        return redirect(url_for("home"))
-    
-
-
-if __name__ == "__main__":
     app.run()
 
-
+if __name__ == "__main__":
+    main()
