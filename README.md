@@ -5,7 +5,11 @@ Created for NewHacks 2022, this project focuses on promoting Canadian Basketball
 
 ## How does it work?
 
-Using BeautifulSoup 4 and Python, we retrieved box score game data for each Ontario University's most recent 5 games. With this information, we calculated the average statistics of the player's 5 games and applied it to our Player Valuability Rating formula. This data was then formatted and posted on our web application using HTML/CSS, JavaScript and BootStrap.
+Using Pandas and Python, we retrieved box score game data for each Ontario University's most recent 5 games. With this information, we calculated the average statistics of the player's 5 games and applied it to our Player Valuability Rating formula. This data was then formatted and posted on our web application using HTML/CSS, JavaScript and BootStrap.
+
+The statistic itself is very thorough. Here is the formula we created to calculate each player's PVR.
+
+![PVR Formula](/static/img.png)
 
 ## Why use this stat over hundreds of other advanced metrics?
 
