@@ -5,6 +5,7 @@
 from webParsing import *
 from calculations import *
 from flask import Flask, render_template, redirect, url_for
+import json
 import time
 
 def main():
@@ -27,9 +28,29 @@ def main():
         teams[team].append(getTeamGames(teams[team][0], magic_number))
         teamPVR[team] = getTeamPVR(team, teams[team][1])
         
-        # we only want players who've played all games
+        # we only want players who've played all games, and their photos
         if teamPVR[team][0][-1] == magic_number:
-            top_players[teamPVR[team][0][1]] = teamPVR[team][0]
+            toAdd = teamPVR[team][0]
+            
+            photoLink = "team-photos/" + team + ".json"
+
+            data = json.load(open(photoLink))
+
+            if teamPVR[team][0][0] in data:
+                toAdd.append(data[teamPVR[team][0][0]])
+            else:
+                toAdd.append("https://www.pngitem.com/pimgs/m/504-5040528_empty-profile-picture-png-transparent-png.png")
+                
+                
+            uniName = team
+            if uniName == "wilfrid":
+                uniName = "WLU"
+            else:
+                uniName = uniName.title()
+            
+            toAdd.append(uniName)
+
+            top_players[teamPVR[team][0][1]] = toAdd
             top_pvrs.append(teamPVR[team][0][1])
 
     # get the top 3 PVRs in the league
