@@ -1,3 +1,4 @@
 
 __pycache__/getPlayerStat.cpython-311.pyc
 *.pyc
+.DS_Store
