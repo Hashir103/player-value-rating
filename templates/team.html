@@ -58,7 +58,7 @@
       {% for x in range(teamStats|length) %}
         <tr>
           <th scope="row">{{x+1}}</th>
-          <td>{{ teamStats[x][0] }} ({{ teamStats[x][-1] }})</td>
+          <td>{{ teamStats[x][0] }} ({{ teamStats[x][5] }})</td>
           <td>{{ "%.1f"|format(teamStats[x][2]) }}</td>
           <td>{{ "%.1f"|format(teamStats[x][3]) }}</td>
           <td>{{ "%.1f"|format(teamStats[x][4]) }}</td>
